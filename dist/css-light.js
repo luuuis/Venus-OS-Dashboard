@@ -75,39 +75,39 @@ export function cssDataLight(user) {
 
         /* Position des points pour la colonne 2 */
         .box .anchor-L {
-			width: 5px;
-            height: 10px;
-            left: -6px;
+			width: 3px;
+            height: 5px;
+            left: -4px;
             top: 50%;
             transform: translateY(-50%);
-			border-radius: 5px 0 0 5px;
+			border-radius: 3px 0 0 3px;
         }
 
         .box .anchor-R {
-			width: 5px;
-            height: 10px;
-            right: -6px;
+			width: 3px;
+            height: 5px;
+            right: -4px;
             top: 50%;
             transform: translateY(-50%);
-			border-radius: 0 5px 5px 0;
+			border-radius: 0 3px 3px 0;
         }
-		
+
 		.box .anchor-T {
-			width: 10px;
-            height: 5px;
-            top: -6px;
+			width: 5px;
+            height: 3px;
+            top: -4px;
             left: 50%;
             transform: translateX(-50%);
-			border-radius: 5px 5px 0 0;
+			border-radius: 3px 3px 0 0;
         }
-		
+
 		.box .anchor-B {
-			width: 10px;
-            height: 5px;
-            bottom: -6px;
+			width: 5px;
+            height: 3px;
+            bottom: -4px;
             left: 50%;
             transform: translateX(-50%);
-			border-radius: 0 0 5px 5px;
+			border-radius: 0 0 3px 3px;
         }
 
         .line {
@@ -261,4 +261,3 @@ export function cssDataLight(user) {
     return css;
 
 }
-  
