@@ -20,7 +20,7 @@ export function cssDataLight(user) {
             display: flex;
             width: 100%;
             height: 100%;
-            padding: 25px 20px 15px 20px;
+            padding: 10px 10px 5px 10px;
             border-radius: 10px;
             /*border: 1px solid #ccc;*/
             position: absolute;
