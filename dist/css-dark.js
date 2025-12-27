@@ -198,6 +198,8 @@ export function cssDataDark(user) {
 		
 		.graph {
 			position: absolute;
+			left: 0;
+			right: 0;
 			bottom: 15%;
 			width: 100%;
 			height: 30%;
