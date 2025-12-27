@@ -20,10 +20,7 @@ let editorOpen = false;
 /********************************************************/
 function formatEntityWithUnit(hass) {
     return (entityId) => {
-        // Look up entity state from hass.states using the entity ID
         const stateObj = hass.states[entityId];
-
-        // Handle null/undefined state - return empty string for display
         if (!stateObj) {
             return '';
         }
@@ -33,9 +30,8 @@ function formatEntityWithUnit(hass) {
 
         // If formatted value ends with the unit, ensure it is styled correctly.
         if (unit && formattedValue.endsWith(unit)) {
-          // Extract value with locale-specific spacing preserved
-          const valueWithSpace = formattedValue.slice(0, -unit.length);
-          return `${valueWithSpace}<div class="boxUnit">${unit}</div>`;
+          const valueMinusUnit = formattedValue.slice(0, -unit.length);
+          return `${valueMinusUnit}<div class="boxUnit">${unit}</div>`;
         }
 
         // Return formatted value as-is
