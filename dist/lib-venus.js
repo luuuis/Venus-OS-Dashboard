@@ -49,16 +49,48 @@ export function baseRender(config, appendTo) {
 	    <div id="dashboard" class="dashboard">
     		<svg id="svg_container" class="line" viewBox="0 0 1000 600" width="100%" height="100%">
     			<defs>
-    				<filter id="blurEffect">
-    					<feGaussianBlur in="SourceGraphic" stdDeviation="1"/> <!-- Ajuste stdDeviation pour plus ou moins de flou -->
+    				<filter id="motionBlur">
+    					<feGaussianBlur in="SourceGraphic" stdDeviation="4,0.5" result="blur1"/>
+    					<feOffset in="blur1" dx="-10" dy="0" result="offset1"/>
+    					<feComponentTransfer in="offset1" result="fade1">
+    						<feFuncA type="linear" slope="0.7"/>
+    					</feComponentTransfer>
+
+    					<feGaussianBlur in="SourceGraphic" stdDeviation="8,0.8" result="blur2"/>
+    					<feOffset in="blur2" dx="-25" dy="0" result="offset2"/>
+    					<feComponentTransfer in="offset2" result="fade2">
+    						<feFuncA type="linear" slope="0.45"/>
+    					</feComponentTransfer>
+
+    					<feGaussianBlur in="SourceGraphic" stdDeviation="12,1" result="blur3"/>
+    					<feOffset in="blur3" dx="-45" dy="0" result="offset3"/>
+    					<feComponentTransfer in="offset3" result="fade3">
+    						<feFuncA type="linear" slope="0.25"/>
+    					</feComponentTransfer>
+
+    					<feGaussianBlur in="SourceGraphic" stdDeviation="16,1.2" result="blur4"/>
+    					<feOffset in="blur4" dx="-70" dy="0" result="offset4"/>
+    					<feComponentTransfer in="offset4" result="fade4">
+    						<feFuncA type="linear" slope="0.12"/>
+    					</feComponentTransfer>
+
+    					<feMerge>
+    						<feMergeNode in="fade4"/>
+    						<feMergeNode in="fade3"/>
+    						<feMergeNode in="fade2"/>
+    						<feMergeNode in="fade1"/>
+    						<feMergeNode in="SourceGraphic"/>
+    					</feMerge>
     				</filter>
     				<radialGradient id="gradientDark" cx="50%" cy="50%" r="50%">
     					<stop offset="0%" stop-color="#ffffff" stop-opacity="1"></stop>
-    					<stop offset="90%" stop-color="#ffffff" stop-opacity="0"></stop>
+    					<stop offset="50%" stop-color="#ffffff" stop-opacity="0.3"></stop>
+    					<stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
     				</radialGradient>
     				<radialGradient id="gradientLight" cx="50%" cy="50%" r="50%">
     					<stop offset="0%" stop-color="#000000" stop-opacity="1"></stop>
-    					<stop offset="90%" stop-color="#000000" stop-opacity="0"></stop>
+    					<stop offset="50%" stop-color="#000000" stop-opacity="0.3"></stop>
+    					<stop offset="100%" stop-color="#000000" stop-opacity="0"></stop>
     				</radialGradient>
     			</defs>
         		<g id="path_container" class="balls"></g>
@@ -643,24 +675,32 @@ function creatLine(anchorId1, anchorId2, direction_init, isDarkTheme, appendTo) 
     
     path.setAttribute("fill", "none");
 	path.setAttribute("stroke-width", "2");
-	//path.setAttribute("filter", "url(#blurEffect)"); // Utilisation du dégradé
-	
-	// Créer la boule avec le dégradé
-	const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-	circle.setAttribute("class", "ball");
-	circle.setAttribute("cx", coords1.x); // Départ de la boule
-	circle.setAttribute("cy", coords1.y); // Départ de la boule
-	circle.setAttribute("r", "4");
-	if(isDarkTheme) circle.setAttribute("fill", "url(#gradientDark)"); // Utilisation du dégradé
-	else circle.setAttribute("fill", "url(#gradientLight)"); // Utilisation du dégradé
-	
-	// Ajouter le path et le circle au groupe
+
 	pathContainer.appendChild(path);
-	circContainer.appendChild(circle);
-	
+
+	const pathLength = path.getTotalLength();
+	const ballSpacing = 35;
+	const numBalls = Math.max(1, Math.floor(pathLength / ballSpacing));
+
+  // Créer les boules avec le dégradé
+	const circles = new Array(numBalls).fill(0).map(() => {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("class", "ball");
+    circle.setAttribute("cx", coords1.x); // Départ de la boule
+    circle.setAttribute("cy", coords1.y); // Départ de la boule
+    circle.setAttribute("r", "6");
+    circle.setAttribute("filter", "url(#motionBlur)");
+    circle.setAttribute("fill", "url(#gradientDark)");
+
+    return circle;
+  });
+
+	// Ajouter le path et le circle au groupe
+  circles.forEach(circle => circContainer.appendChild(circle))
+
 	// Animer la boule le long du path et recuperation du pointeur de fonction "reverse"
-	const controls = animateBallAlongPath(anchorId1, path, circle, appendTo);
-	
+	const controls = animateBallAlongPath(anchorId1, path, circles, appendTo);
+
 	// ajout du pointeur "reverse" dans un "map" pour exploitation ulterieur
 	pathControls.set(anchorId1, controls);
 	
@@ -705,11 +745,11 @@ function getAnchorCoordinates(anchorId, appendTo) {
 /* fonction de lancement de l'animation sur les liens :           */
 /* recoit en param l'id du lien dans le map (son ancre d'origine) */
 /* necessaire pour recuperer le sens de base de circulation du    */
-/* circle, le path pour le deplacement du circle, et le circle à  */
-/* deplacer                                                       */
+/* circles (array), le path pour le deplacement, et les circles   */
+/* à deplacer                                                     */
 /******************************************************************/
-function animateBallAlongPath(anchorId1, path, circle, appendTo) {
-	
+function animateBallAlongPath(anchorId1, path, circles, appendTo) {
+
 	let direction = directionControls.get(anchorId1);
 	
 	const pathLength = path.getTotalLength(); // Longueur totale du path
@@ -717,7 +757,7 @@ function animateBallAlongPath(anchorId1, path, circle, appendTo) {
 	const box = appendTo.querySelector(`#dashboard`);
 	const boxWidth = box.offsetWidth;
 
-	const speed = boxWidth/10; // Vitesse de la boule en pixels par seconde 100/900
+	const speed = boxWidth/17; // Vitesse de la boule en pixels par seconde 100/900
 	const duration = pathLength / speed * 1000; // Durée de l'animation (en ms)
 	let startTime;
 	
@@ -730,29 +770,42 @@ function animateBallAlongPath(anchorId1, path, circle, appendTo) {
 		if (!startTime) startTime = time;
 		
 		const elapsed = time - startTime; // Temps écoulé
-		var progress = (elapsed % duration) / duration; // Progression sur l'animation (0 à 1)
-		
-		if (direction == -1) {
-			progress = 1 - progress; // Inverse la progression pour revenir en arrière
-		} if (direction == 0) {
-			progress = 0; 
-		}
-		
-		// Calculer la position actuelle sur le path, proportionnelle à la durée
-		const point = path.getPointAtLength(progress * pathLength);
-		
-		// Déplacer la boule
-		circle.setAttribute("cx", point.x);
-		circle.setAttribute("cy", point.y);
-		
-		// Continuer l'animation
+		const baseProgress = (elapsed % duration) / duration; // Progression sur l'animation (0 à 1)
+
+    circles.forEach((circle, index) => {
+      if (direction == 0) {
+        circle.setAttribute("visibility", "hidden");
+      } else {
+        circle.setAttribute("visibility", "visible");
+
+        const phaseOffset = index / circles.length;
+        let progress = (baseProgress + phaseOffset) % 1;
+
+        if (direction == -1) {
+          progress = 1 - progress;
+        }
+
+        const point = path.getPointAtLength(progress * pathLength);
+
+        const lookAhead = direction == -1 ? -0.005 : 0.005;
+        const nextProgress = Math.max(0, Math.min(progress + lookAhead, 1));
+        const nextPoint = path.getPointAtLength(nextProgress * pathLength);
+
+        const angle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x);
+        const degrees = angle * (180 / Math.PI);
+
+        circle.setAttribute("cx", point.x);
+        circle.setAttribute("cy", point.y);
+        circle.setAttribute("transform", `rotate(${degrees} ${point.x} ${point.y})`);
+      }
+    });
+
 		requestAnimationFrame(moveBall);
 	}
-	
+
 	// Démarrer l'animation
 	requestAnimationFrame(moveBall);
-	
-	// renvoi le pointeur de la fonction "reverse"
+
 	return {
 		reverse: reverseDirection,
 	};
