@@ -835,9 +835,9 @@ export function checkForReverse(devices, hass) {
                     const pathControl = pathControls.get(`${boxId}_${link.start}`);
                     
                     if (pathControl && typeof pathControl.reverse === "function") {
-                        if(valueLinkEnt < -0.5) pathControls.get(`${boxId}_${link.start}`).reverse(-1); 
-                        else if(valueLinkEnt > 0.5) pathControls.get(`${boxId}_${link.start}`).reverse(1); 
-                        else pathControls.get(`${boxId}_${link.start}`).reverse(0); 
+                        if(valueLinkEnt < -25) pathControls.get(`${boxId}_${link.start}`).reverse(-1);
+                        else if(valueLinkEnt > 25) pathControls.get(`${boxId}_${link.start}`).reverse(1);
+                        else pathControls.get(`${boxId}_${link.start}`).reverse(0);
                     } 
                 }
         	}
