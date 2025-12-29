@@ -31,7 +31,7 @@ function formatEntityWithUnit(hass) {
         // If formatted value ends with the unit, ensure it is styled correctly.
         if (unit && formattedValue.endsWith(unit)) {
           const valueMinusUnit = formattedValue.slice(0, -unit.length);
-          return `${valueMinusUnit}<div class="boxUnit">${unit}</div>`;
+          return `${valueMinusUnit}<div class="venus-box-unit">${unit}</div>`;
         }
 
         // Return formatted value as-is
@@ -46,10 +46,10 @@ function formatEntityWithUnit(hass) {
 export function baseRender(config, appendTo) {
     
     appendTo.innerHTML = `
-	    <div id="dashboard" class="dashboard">
-    		<svg id="svg_container" class="line" viewBox="0 0 1000 600" width="100%" height="100%">
+	    <div id="venus-dashboard" class="venus-dashboard">
+    		<svg id="venus-svg-container" class="venus-line" viewBox="0 0 1000 600" width="100%" height="100%">
     			<defs>
-    				<filter id="motionBlur">
+    				<filter id="venus-motionBlur">
     					<feGaussianBlur in="SourceGraphic" stdDeviation="4,0.5" result="blur1"/>
     					<feOffset in="blur1" dx="-10" dy="0" result="offset1"/>
     					<feComponentTransfer in="offset1" result="fade1">
@@ -82,23 +82,23 @@ export function baseRender(config, appendTo) {
     						<feMergeNode in="SourceGraphic"/>
     					</feMerge>
     				</filter>
-    				<radialGradient id="gradientDark" cx="50%" cy="50%" r="50%">
+    				<radialGradient id="venus-gradientDark" cx="50%" cy="50%" r="50%">
     					<stop offset="0%" stop-color="#ffffff" stop-opacity="1"></stop>
     					<stop offset="50%" stop-color="#ffffff" stop-opacity="0.3"></stop>
     					<stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
     				</radialGradient>
-    				<radialGradient id="gradientLight" cx="50%" cy="50%" r="50%">
+    				<radialGradient id="venus-gradientLight" cx="50%" cy="50%" r="50%">
     					<stop offset="0%" stop-color="#000000" stop-opacity="1"></stop>
     					<stop offset="50%" stop-color="#000000" stop-opacity="0.3"></stop>
     					<stop offset="100%" stop-color="#000000" stop-opacity="0"></stop>
     				</radialGradient>
     			</defs>
-        		<g id="path_container" class="balls"></g>
-    			<g id="circ_container" class="lines"></g>
+        		<g id="venus-path-container" class="balls"></g>
+    			<g id="venus-circ-container" class="lines"></g>
     		</svg>
-            <div id="column-1" class="column column-1"></div>
-            <div id="column-2" class="column column-2"></div>
-            <div id="column-3" class="column column-3"></div>
+            <div id="venus-column-1" class="venus-column venus-column-1"></div>
+            <div id="venus-column-2" class="venus-column venus-column-2"></div>
+            <div id="venus-column-3" class="venus-column venus-column-3"></div>
         </div>
 	`;
 
@@ -113,7 +113,7 @@ export function addBox(col1, col2, col3, appendTo) {
     const boxCounts = [col1, col2, col3];
     
     boxCounts.forEach((count, columnIndex) => {
-        const column = appendTo.querySelector(`#dashboard > #column-${columnIndex + 1}`); // Accède aux colonnes via querySelector
+        const column = appendTo.querySelector(`#venus-dashboard > #venus-column-${columnIndex + 1}`); // Accède aux colonnes via querySelector
 
         if (column) {
             const gapPercentage = count === 3 ? '5%' : count === 2 ? '10%' : '0';
@@ -122,21 +122,21 @@ export function addBox(col1, col2, col3, appendTo) {
             for (let i = 1; i <= count; i++) {
                 
                 const content = document.createElement('div'); // Crée un nouvel élément div
-                content.id = `content_${columnIndex + 1}-${i}`; // Définit l'id de la box
-                content.className = 'content'; // Applique la classe 'content'
-                
+                content.id = `venus-content_${columnIndex + 1}-${i}`; // Définit l'id de la box
+                content.className = 'venus-content'; // Applique la classe 'venus-content'
+
                 const graph = document.createElement('div'); // Crée un nouvel élément div
-                graph.id = `graph_${columnIndex + 1}-${i}`;
-                graph.className = 'graph';
-                
+                graph.id = `venus-graph_${columnIndex + 1}-${i}`;
+                graph.className = 'venus-graph';
+
                 const gauge = document.createElement('div'); // Crée un nouvel élément div
-                gauge.id = `gauge_${columnIndex + 1}-${i}`;
-                gauge.className = 'gauge';
+                gauge.id = `venus-gauge_${columnIndex + 1}-${i}`;
+                gauge.className = 'venus-gauge';
                 gauge.style.height = `0px`;
-                
+
                 const box = document.createElement('div'); // Crée un nouvel élément div
-                box.id = `box_${columnIndex + 1}-${i}`; // Définit l'id de la box
-                box.className = 'box'; // Applique la classe 'box'
+                box.id = `venus-box_${columnIndex + 1}-${i}`; // Définit l'id de la box
+                box.className = 'venus-box'; // Applique la classe 'venus-box'
                 box.appendChild(graph);
                 box.appendChild(gauge);
                 box.appendChild(content);
@@ -185,7 +185,7 @@ export function addAnchors(config, appendTo) {
 /* le coté(position)                    */
 /****************************************/
 function creatAnchors(colNbrs, boxNbrs, numAnchors, type, appendTo) {
-	const box = appendTo.querySelector(`#dashboard > #column-${colNbrs} > #box_${colNbrs}-${boxNbrs}`); // Accède aux colonnes via querySelector
+	const box = appendTo.querySelector(`#venus-dashboard > #venus-column-${colNbrs} > #venus-box_${colNbrs}-${boxNbrs}`); // Accède aux colonnes via querySelector
 	
 	if (!box) {
 		console.error(`Boîte avec l'ID "box_${colNbrs}-${boxNbrs}" introuvable.`);
@@ -195,9 +195,9 @@ function creatAnchors(colNbrs, boxNbrs, numAnchors, type, appendTo) {
 	// Ajouter les nouveaux anchors
 	for (let i = 0; i < numAnchors; i++) {
 		const anchor = document.createElement('div');
-		
-		anchor.className = 'anchor anchor-'+type;
-		anchor.id = `anchor_${colNbrs}-${boxNbrs}_${type}-${i+1}`;
+
+		anchor.className = 'venus-anchor venus-anchor-'+type;
+		anchor.id = `venus-anchor_${colNbrs}-${boxNbrs}_${type}-${i+1}`;
 		
 		// Calculer la position de chaque anchor
 		const positionPercent = ((i + 1) / (numAnchors + 1)) * 100; // Uniformément réparti
@@ -235,9 +235,9 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
             
         const device = devices[boxId];
             
-        const divGraph = appendTo.querySelector(`#dashboard > #column-${boxId[0]} > #box_${boxId} > #graph_${boxId}`);
-        const divGauge = appendTo.querySelector(`#dashboard > #column-${boxId[0]} > #box_${boxId} > #gauge_${boxId}`);
-        const innerContent = appendTo.querySelector(`#dashboard > #column-${boxId[0]} > #box_${boxId} > #content_${boxId}`);
+        const divGraph = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-graph_${boxId}`);
+        const divGauge = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-gauge_${boxId}`);
+        const innerContent = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-content_${boxId}`);
                 
         let state = hass.states[device.entity];
         const rawValue = state ? state.state : 'N/C';
@@ -318,33 +318,33 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
             
         if(device.headerEntity) {
             addHeaderEntity = `
-                <div class="headerEntity">${formatEntity(device.headerEntity)}</div>
+                <div class="venus-header-entity">${formatEntity(device.headerEntity)}</div>
             `;
         }
-        
+
         if(device.entity2) {
             addEntity2 = `
-                <div class="boxSensor2"${addSensor2Style}>${formatEntity(device.entity2)}</div>
+                <div class="venus-box-sensor2"${addSensor2Style}>${formatEntity(device.entity2)}</div>
             `;
         }
-            
+
         if(device.footerEntity1) {
             addFooter = `
-                <div class="boxFooter"${addFooterStyle}>
-                    <div class="footerCell">${formatEntity(device.footerEntity1)}</div>
-                    <div class="footerCell">${formatEntity(device.footerEntity2)}</div>
-                    <div class="footerCell">${formatEntity(device.footerEntity3)}</div>
+                <div class="venus-box-footer"${addFooterStyle}>
+                    <div class="venus-footer-cell">${formatEntity(device.footerEntity1)}</div>
+                    <div class="venus-footer-cell">${formatEntity(device.footerEntity2)}</div>
+                    <div class="venus-footer-cell">${formatEntity(device.footerEntity3)}</div>
                 </div>
             `;
         }
-            
+
         innerContent.innerHTML = `
-            <div class="boxHeader"${addHeaderStyle}>
-                <ha-icon icon="${device.icon}" class="boxIcon"></ha-icon>
-                <div class="boxTitle">${device.name}</div>
+            <div class="venus-box-header"${addHeaderStyle}>
+                <ha-icon icon="${device.icon}" class="venus-box-icon"></ha-icon>
+                <div class="venus-box-title">${device.name}</div>
                 ${addHeaderEntity}
             </div>
-            <div class="boxSensor1"${addSensorStyle}>${formatEntity(device.entity) || 'N/C'}</div>
+            <div class="venus-box-sensor1"${addSensorStyle}>${formatEntity(device.entity) || 'N/C'}</div>
             ${addEntity2}
             ${addFooter}
         `;
@@ -368,7 +368,7 @@ function creatGraph (boxId, device, isDark, appendTo) {
     
     if(!updateGraphTriggers.get(device.entity)) return;
     
-    const divGraph = appendTo.querySelector(`#dashboard > #column-${boxId[0]} > #box_${boxId} > #graph_${boxId}`);
+    const divGraph = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-graph_${boxId}`);
     const data = historicData.get(device.entity);
     
     if (!data || data.length === 0) {
@@ -493,18 +493,18 @@ function simplifyPath(points, tolerance) {
 export function checkReSize(devices, isDarkTheme, appendTo) {
     
     // recuperation de la taille de la carte pour recalcul des path si necessaire
-    const rect = appendTo.querySelector(`#dashboard`).getBoundingClientRect();
+    const rect = appendTo.querySelector(`#venus-dashboard`).getBoundingClientRect();
     
     // si largeur differente de precedemment : recalcul
     if(dashboardOldWidth != rect.width) {
         
         // conteneur des path et des circles
-        const circContainer = appendTo.querySelector(`#dashboard > #svg_container > #circ_container`);
-        const pathContainer = appendTo.querySelector(`#dashboard > #svg_container > #path_container`);
+        const circContainer = appendTo.querySelector(`#venus-dashboard > #venus-svg-container > #venus-circ-container`);
+        const pathContainer = appendTo.querySelector(`#venus-dashboard > #venus-svg-container > #venus-path-container`);
             
         // si le DOM est fini...
         const checkReady = () => {
-            const dashboard = appendTo.querySelector("#dashboard");
+            const dashboard = appendTo.querySelector("#venus-dashboard");
         
             if (dashboard) {
                     
@@ -603,8 +603,8 @@ function addLine(devices, isDarkTheme, appendTo) {
 /*********************************************************/
 function creatLine(anchorId1, anchorId2, direction_init, isDarkTheme, appendTo) {
     
-    const circContainer = appendTo.querySelector(`#dashboard > #svg_container > #circ_container`);
-    const pathContainer = appendTo.querySelector(`#dashboard > #svg_container > #path_container`);
+    const circContainer = appendTo.querySelector(`#venus-dashboard > #venus-svg-container > #venus-circ-container`);
+    const pathContainer = appendTo.querySelector(`#venus-dashboard > #venus-svg-container > #venus-path-container`);
 
     if (!circContainer) {
 		console.error("circContainer container introuvable.");
@@ -689,8 +689,8 @@ function creatLine(anchorId1, anchorId2, direction_init, isDarkTheme, appendTo) 
     circle.setAttribute("cx", coords1.x); // Départ de la boule
     circle.setAttribute("cy", coords1.y); // Départ de la boule
     circle.setAttribute("r", "6");
-    circle.setAttribute("filter", "url(#motionBlur)");
-    circle.setAttribute("fill", "url(#gradientDark)");
+    circle.setAttribute("filter", "url(#venus-motionBlur)");
+    circle.setAttribute("fill", "url(#venus-gradientDark)");
 
     return circle;
   });
@@ -717,8 +717,8 @@ function getAnchorCoordinates(anchorId, appendTo) {
 	const columnIndex = anchorId[0];
 	const boxIndex = anchorId.substring(0, 3);
 	
-	const anchor = appendTo.querySelector(`#dashboard > #column-${columnIndex} > #box_${boxIndex} > #anchor_${anchorId}`);
-	const container = appendTo.querySelector(`#dashboard`);
+	const anchor = appendTo.querySelector(`#venus-dashboard > #venus-column-${columnIndex} > #venus-box_${boxIndex} > #venus-anchor_${anchorId}`);
+	const container = appendTo.querySelector(`#venus-dashboard`);
 	
 	if (!anchor || !container) {
 		console.error("Anchor ou container introuvable : " + anchorId);
@@ -754,7 +754,7 @@ function animateBallAlongPath(anchorId1, path, circles, appendTo) {
 	
 	const pathLength = path.getTotalLength(); // Longueur totale du path
 	
-	const box = appendTo.querySelector(`#dashboard`);
+	const box = appendTo.querySelector(`#venus-dashboard`);
 	const boxWidth = box.offsetWidth;
 
 	const speed = boxWidth/17; // Vitesse de la boule en pixels par seconde 100/900

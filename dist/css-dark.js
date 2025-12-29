@@ -16,7 +16,7 @@ export function cssDataDark (user) {
         }
         
   
-        .dashboard {
+        .venus-dashboard {
             display: flex;
             width: 100%;
             height: 100%;
@@ -29,26 +29,25 @@ export function cssDataDark (user) {
             gap: 8%;
         }
 
-        .column {
+        .venus-column {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 33.33%;
         }
 
-        .column-1 {
+        .venus-column-1 {
             width: 25%;
         }
 
-        .column-2 {
+        .venus-column-2 {
             width: 34%;
         }
 
-        .column-3 {
+        .venus-column-3 {
             width: 25%;
         }
 
-        .box {
+        .venus-box {
             background-color: var(--box-background-color);  /* Utilisation de la variable pour la couleur de fond */
             color: white;
             /*font-weight: bold;*/
@@ -61,12 +60,12 @@ export function cssDataDark (user) {
             justify-content: center;
             align-items: center;
             position: relative;
-            
+
             padding: 3% 5%;
         }
 
         /* Point d'accroche */
-        .anchor {
+        .venus-anchor {
             position: absolute;
             background-color: var(--anchor-color); /* Utilisation de la variable pour la couleur du point d'accroche */
             border-radius: 50%; /* Rond */
@@ -74,7 +73,7 @@ export function cssDataDark (user) {
         }
 
         /* Position des points pour la colonne 2 */
-        .box .anchor-L {
+        .venus-box .venus-anchor-L {
 			width: 3px;
             height: 5px;
             left: -4px;
@@ -83,7 +82,7 @@ export function cssDataDark (user) {
 			border-radius: 3px 0 0 3px;
         }
 
-        .box .anchor-R {
+        .venus-box .venus-anchor-R {
 			width: 3px;
             height: 5px;
             right: -4px;
@@ -92,7 +91,7 @@ export function cssDataDark (user) {
 			border-radius: 0 3px 3px 0;
         }
 
-		.box .anchor-T {
+		.venus-box .venus-anchor-T {
 			width: 5px;
             height: 3px;
             top: -4px;
@@ -101,7 +100,7 @@ export function cssDataDark (user) {
 			border-radius: 3px 3px 0 0;
         }
 
-		.box .anchor-B {
+		.venus-box .venus-anchor-B {
 			width: 5px;
             height: 3px;
             bottom: -4px;
@@ -110,23 +109,23 @@ export function cssDataDark (user) {
 			border-radius: 0 0 3px 3px;
         }
 
-        .line {
+        .venus-line {
             position: absolute;
 			left: 0px;
 			top: 0px;
         }
-		
-		.line g path{
+
+		.venus-line g path{
 			stroke: var(--line-color);
 			box-shadow: 0px 0px 1px 1px var(--line-color);
         }
-		
-		.ball {
+
+		.venus-ball {
 			z-index: 1000;
 		}
-		
 
-        .content {
+
+        .venus-content {
             position: relative;
 			display: flex;
 			flex-direction: column;
@@ -136,7 +135,7 @@ export function cssDataDark (user) {
 			gap: 2%;
 		}
 		
-		.boxHeader {
+		.venus-box-header {
 			display: flex;
 			align-items: center;
 			width: 100%;
@@ -144,14 +143,14 @@ export function cssDataDark (user) {
 			gap: 3%;
 			z-index: 2;
 		}
-		
-		.boxIcon {
+
+		.venus-box-icon {
 			--mdc-icon-size: 1.2em;
 			line-height: 1.2em;
 			z-index: 2;
 		}
-		
-		.boxTitle {
+
+		.venus-box-title {
 		    display: flex;
 			align-items: center;
 			width: 100%;
@@ -159,8 +158,8 @@ export function cssDataDark (user) {
 			/*line-height: 1.8em;*/
 			z-index: 2;
 		}
-		
-		.headerEntity {
+
+		.venus-header-entity {
 			/*position: absolute;*/
 			display: flex;
 			align-items: center;
@@ -169,8 +168,8 @@ export function cssDataDark (user) {
 			gap: 3%;
 			z-index: 2;
 		}
-		
-		.boxSensor1 {
+
+		.venus-box-sensor1 {
 			display: flex;
 			align-items: center;
 			width: 100%;
@@ -179,8 +178,8 @@ export function cssDataDark (user) {
 			z-index: 2;
 			gap: 3%
 		}
-		
-		.boxSensor2 {
+
+		.venus-box-sensor2 {
 			display: flex;
 			align-items: center;
 			width: 100%;
@@ -189,14 +188,14 @@ export function cssDataDark (user) {
 			z-index: 2;
 			gap: 3%
 		}
-		
-		.boxUnit {
+
+		.venus-box-unit {
 			/*width: 100%;*/
 			color: #aaaaaa;
 			z-index: 2;
 		}
-		
-		.graph {
+
+		.venus-graph {
 			position: absolute;
 			left: 0;
 			right: 0;
@@ -207,8 +206,8 @@ export function cssDataDark (user) {
 			z-index: 2;
 			/*border-radius: 0 0 5px 5px;*/
 		}
-		
-		.gauge {
+
+		.venus-gauge {
 			position: absolute;
 			left: 0px;
 			bottom: 0px;
@@ -219,7 +218,7 @@ export function cssDataDark (user) {
 			border-radius: 0 0 5px 5px;
 		}
 
-		.gauge::before {
+		.venus-gauge::before {
 		    content: "";
 		    position: absolute;
 		    top: 0;
@@ -236,8 +235,8 @@ export function cssDataDark (user) {
 		    mask-repeat: no-repeat;
 		    mask-size: 100% 100%;
 		}
-		
-		.boxFooter {
+
+		.venus-box-footer {
 			position: absolute;
 			display: flex;
 			bottom: 2px;
@@ -247,8 +246,8 @@ export function cssDataDark (user) {
 			gap: 3%;
 			z-index: 1;
 		}
-		
-		.footerCell {
+
+		.venus-footer-cell {
 			display: flex;
 			line-height: 1em;
 			align-items: center;
