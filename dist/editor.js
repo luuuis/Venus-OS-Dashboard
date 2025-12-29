@@ -15,48 +15,18 @@ class venusOsDashBoardEditor extends HTMLElement {
             this.attachShadow({ mode: 'open' });
             
             this.shadowRoot.innerHTML = `
-              <style>
-                sl-tab-group {
-                  width: 100%;
-                  --sl-tab-border-color: var(--divider-color, #ccc);
-                }
-                sl-tab-panel {
-                  padding: 1em;
-                }
-              </style>
-            
-              <sl-tab-group id="tab-group">
-                <sl-tab slot="nav" panel="conf" data-tab="0"" active>Conf.</sl-tab>
-                <sl-tab slot="nav" panel="conf" data-tab="1">Col. 1</sl-tab>
-                <sl-tab slot="nav" panel="conf" data-tab="2">Col. 2</sl-tab>
-                <sl-tab slot="nav" panel="conf" data-tab="3">Col. 3</sl-tab>
-            
-                <sl-tab-panel id="sl-tab-content" name="conf">
-                  <div id="tab-content" class="content"></div>
-                </sl-tab-panel>
-              </sl-tab-group>
+              <ha-tab-group id="tab-group">
+                <ha-tab-group-tab data-tab="0">Conf.</ha-tab-group-tab>
+                <ha-tab-group-tab data-tab="1">Col. 1</ha-tab-group-tab>
+                <ha-tab-group-tab data-tab="2">Col. 2</ha-tab-group-tab>
+                <ha-tab-group-tab data-tab="3">Col. 3</ha-tab-group-tab>
+              </ha-tab-group>
+              <div id="tab-content" class="content"></div>
             `;
-            
-            const tabGroup = this.shadowRoot.querySelector('#tab-group');
-            
-            /*tabGroup.addEventListener('sl-tab-show', (event) => {
-                
-              const panelName = event.detail.name; // "conf", "col1", etc.
-              const tabIndexMap = {
-                conf: 0,
-                col1: 1,
-                col2: 2,
-                col3: 3,
-              };
-              this._currentTab = tabIndexMap[panelName] ?? 0;
-              this.renderTabContent();
-            });*/
-            
-            
-            
+
             const style = document.createElement('style');
             style.textContent = css();
-            tabGroup.appendChild(style);
+            this.shadowRoot.appendChild(style);
             
             this._currentTab = 0;
             this._currentSubTab = 0;

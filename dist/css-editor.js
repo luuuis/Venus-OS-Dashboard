@@ -1,7 +1,7 @@
 export function css(user) {
     var css =`
     
-        #sl-tab-content {
+        #tab-content {
               display: flex;
               flex-direction: column;
               height: 100%;

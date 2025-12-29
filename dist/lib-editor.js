@@ -215,20 +215,18 @@ export function tabColRender(col, appendTo) {
 
     let tabsHTML = ''; // Initialise une variable pour stocker les onglets
     for (let i = 1; i <= boxCol; i++) {
-        tabsHTML += `<sl-tab slot="nav" panel="anchor" label="1-${i}" data-tab="${i - 1}">${col}-${i}</sl-tab>`;
+        tabsHTML += `<ha-tab-group-tab data-tab="${i - 1}">${col}-${i}</ha-tab-group-tab>`;
     }
-            
+
     tabContent.innerHTML = `
         <div class="devices-editor">
-            <sl-tab-group id="subTab-group">
+            <ha-tab-group id="subTab-group">
                 ${tabsHTML}
-            </sl-tab-group>
-        
-            <sl-tab-panel id="sl-subTab-content" name="anchor">
-              <div id="subTab-content" class="subTab-content">
-                <!-- Le contenu de la section active sera affiché ici -->
-              </div>
-            </sl-tab-panel>
+            </ha-tab-group>
+
+            <div id="subTab-content" class="subTab-content">
+              <!-- Le contenu de la section active sera affiché ici -->
+            </div>
         </div>
     `;
             
@@ -1095,7 +1093,7 @@ export function notifyConfigChange(appendTo) {
 /* dans les onglets principaux  */
 /********************************/
 export function attachLinkClick(renderTabContent, appendTo) {
-    appendTo.shadowRoot.querySelectorAll('#tab-group sl-tab').forEach((link) => {
+    appendTo.shadowRoot.querySelectorAll('#tab-group ha-tab-group-tab').forEach((link) => {
         if (eventHandlers.has(link)) {
             console.log("Événement déjà attaché à cet élément #link-container mwc-tab :", link);
             return;
@@ -1118,7 +1116,7 @@ export function attachLinkClick(renderTabContent, appendTo) {
 /* dans les onglets secondaires */
 /********************************/
 export function attachSubLinkClick(appendTo) {
-    appendTo.shadowRoot.querySelectorAll('#subTab-group sl-tab').forEach((sublink) => {
+    appendTo.shadowRoot.querySelectorAll('#subTab-group ha-tab-group-tab').forEach((sublink) => {
         if (eventHandlers.has(sublink)) {
             console.log("Événement déjà attaché à cet élément #sublink-container mwc-tab :", sublink);
             return;
