@@ -116,7 +116,7 @@ export function addBox(col1, col2, col3, appendTo) {
         const column = appendTo.querySelector(`#venus-dashboard > #venus-column-${columnIndex + 1}`); // Accède aux colonnes via querySelector
 
         if (column) {
-            const gapPercentage = count === 3 ? '5%' : count === 2 ? '10%' : '0';
+            const gapPercentage = count === 3 ? '6%' : count === 2 ? '12%' : '0';
             column.style.gap = gapPercentage; // Applique le gap à la colonne
 
             for (let i = 1; i <= count; i++) {
