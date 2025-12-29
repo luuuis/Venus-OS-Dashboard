@@ -234,14 +234,16 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
     	}
             
         const device = devices[boxId];
-            
+
         const divGraph = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-graph_${boxId}`);
         const divGauge = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-gauge_${boxId}`);
         const innerContent = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId} > #venus-content_${boxId}`);
-                
+
+        const box = appendTo.querySelector(`#venus-dashboard > #venus-column-${boxId[0]} > #venus-box_${boxId}`);
+        const boxWidth = box.offsetWidth;
         let state = hass.states[device.entity];
         const rawValue = state ? state.state : 'N/C';
-            
+
         let addGauge = "";
         let addHeaderEntity = "";
         let addEntity2 = "";
@@ -250,19 +252,19 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
         let addSensorStyle = "";
         let addSensor2Style = "";
         let addFooterStyle = "";
-        
+
         if(device.graph) creatGraph(boxId, device, isDark, appendTo);
-        
+
         if(device.gauge) divGauge.style.height = rawValue + `%`;
         else divGauge.style.height = `0px`;
-            
+
         if(styles.header != "") {
             if(styles.header == "auto") {
-                
+
                 let dynSizeHeader = "";
-                
-                if(boxId[0] == "2") dynSizeHeader = Math.round(0.0693*innerContent.offsetWidth+1.9854);
-                else dynSizeHeader = Math.round(0.0945*innerContent.offsetWidth+2.209);
+
+                if(boxId[0] == "2") dynSizeHeader = Math.round(0.0693*boxWidth+1.9854);
+                else dynSizeHeader = Math.round(0.0945*boxWidth+2.209);
 
                 addHeaderStyle = ` style="font-size: ${dynSizeHeader}px;"`;
                 
@@ -273,11 +275,11 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
         
         if(styles.sensor != "") {
             if(styles.sensor == "auto") {
-                    
+
                 let dynSizeSensor = "";
-                    
-                if(boxId[0] == "2") dynSizeSensor = Math.round(0.1065*innerContent.offsetWidth+8.7929);
-                else dynSizeSensor = Math.round(0.1452*innerContent.offsetWidth+9.0806);
+
+                if(boxId[0] == "2") dynSizeSensor = Math.round(0.1065*boxWidth+8.7929);
+                else dynSizeSensor = Math.round(0.1452*boxWidth+9.0806);
                     
                 addSensorStyle = ` style="font-size: ${dynSizeSensor}px;"`;
                     
@@ -288,11 +290,11 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
         
         if(styles.sensor2 != "") {
             if(styles.sensor == "auto") {
-                    
+
                 let dynSizeSensor2 = "";
-                    
-                if(boxId[0] == "2") dynSizeSensor2 = Math.round(0.0693*innerContent.offsetWidth+1.9854);
-                else dynSizeSensor2 = Math.round(0.0945*innerContent.offsetWidth+2.209);
+
+                if(boxId[0] == "2") dynSizeSensor2 = Math.round(0.0693*boxWidth+1.9854);
+                else dynSizeSensor2 = Math.round(0.0945*boxWidth+2.209);
                     
                 addSensor2Style = ` style="font-size: ${dynSizeSensor2}px;"`;
                     
@@ -303,11 +305,11 @@ export function fillBox(config, styles, isDark, hass, appendTo) {
             
         if(styles.footer != "") {
             if(styles.footer == "auto") {
-                    
+
                 let dynSizeFooter = "";
-                    
-                if(boxId[0] == "2") dynSizeFooter = Math.round(0.0803*innerContent.offsetWidth-2.438);
-                else dynSizeFooter = Math.round(0.1095*innerContent.offsetWidth-2.1791);
+
+                if(boxId[0] == "2") dynSizeFooter = Math.round(0.0803*boxWidth-2.438);
+                else dynSizeFooter = Math.round(0.1095*boxWidth-2.1791);
                     
                 addFooterStyle = ` style="font-size: ${dynSizeFooter}px;"`;
                     
